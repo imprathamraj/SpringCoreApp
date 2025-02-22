@@ -1,29 +1,28 @@
 package com.spring.appdevelopment;
 
-import com.spring.appdevelopment.Bean.EmployeeBean;
-import org.springframework.boot.CommandLineRunner;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.ApplicationContext;
-import org.springframework.context.annotation.ComponentScan;
 
 @SpringBootApplication
-@ComponentScan("com.spring.appdevelopment.Bean")
-public class AppDevelopmentApplication implements CommandLineRunner {
+public class AppDevelopmentApplication {
 
-	private final ApplicationContext applicationContext;
-
-	public AppDevelopmentApplication(ApplicationContext applicationContext) {
-		this.applicationContext = applicationContext;
-	}
+	public static final Logger logger = LoggerFactory.getLogger(AppDevelopmentApplication.class);
 
 	public static void main(String[] args) {
-		SpringApplication.run(AppDevelopmentApplication.class, args);
-	}
+		logger.debug("Welcome to Spring Concept Demo");
 
-	@Override
-	public void run(String... args) {
-		EmployeeBean employeeBean = applicationContext.getBean(EmployeeBean.class);
-		employeeBean.showEmployeeDetails();
+		ApplicationContext context = SpringApplication.run(AppDevelopmentApplication.class, args);
+
+		// Ensure DemoBean exists in the context
+		if (context.containsBean("demoBean")) {
+			logger.debug("Checking Context: {}", context.getBean("demoBean"));
+		} else {
+			logger.warn("DemoBean is not found in the context!");
+		}
+
+		logger.debug("\n*** Example Using @Autowire annotation on property ***");
 	}
 }
